@@ -2,6 +2,7 @@ const app = document.getElementById("app");
 function Inert(type, props, ...children) {
   return { type, props: props || {}, children };
 }
+const Fragment = ({ children }) => children;
 function render(vnode, container) {
   if (typeof vnode === "string" || typeof vnode === "number") {
     container.appendChild(document.createTextNode(vnode));
@@ -45,6 +46,7 @@ function rerender() {
   render(rootComponent(), app);
 }
 export {
+  Fragment,
   Inert,
   mount,
   state
