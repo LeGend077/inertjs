@@ -3,15 +3,14 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "build": "swc src -d dist"
+    "scripts": {
+    "build": "esbuild src/**/*.jsx --outdir=dist/src --format=esm --target=es2020 --jsx-factory=Inert --jsx-fragment=Fragment"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "module",
   "devDependencies": {
-    "@swc/cli": "^0.7.9",
-    "@swc/core": "^1.15.8"
+    "esbuild": "^0.27.2"
   }
 }
