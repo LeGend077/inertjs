@@ -50,15 +50,9 @@ function render(vnode, container) {
 function state(initial) {
   let value = initial;
   return {
-    /**
-     * @returns Returns the value of the state.
-     */
-    get: () => value,
-    /**
-     * @param {*} v Change the state's value.
-     * @param {Boolean} notify Whether the state change
-     * triggers a rerender.
-     */
+    get: () => {
+      return value;
+    },
     set: (v, notify = true) => {
       value = v;
       if (notify) rerender();

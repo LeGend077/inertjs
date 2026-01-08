@@ -57,24 +57,13 @@ function render(vnode, container) {
     container.appendChild(el);
 }
 
-/**
- * @param {*} initial Initial value of the state.
- * Will rerender when a state changes.
- */
 export function state(initial) {
     let value = initial;
 
     return {
-        /**
-         * @returns Returns the value of the state.
-         */
-        get: () => value,
-
-        /**
-         * @param {*} v Change the state's value.
-         * @param {Boolean} notify Whether the state change
-         * triggers a rerender.
-         */
+        get: () => {
+	    return value;
+	},
         set: (v, notify = true) => {
             value = v;
             if (notify) rerender();
@@ -85,11 +74,6 @@ export function state(initial) {
 let rootComponent = null;
 let app = null;
 
-/**
- * @param {Function} component Component (function returning JSX)
- * to mount as root.
- * @param {String} querySelector Element selector to mount into.
- */
 export function mount(component, querySelector) {
     app = document.querySelector(querySelector);
     rootComponent = component;
