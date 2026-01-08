@@ -6,6 +6,7 @@ function App() {
   const value = state("");
   const todos = state([]);
   const count = state(0);
+  const doubledCount = compute(() => count.get() * 2);
   let todoList = /* @__PURE__ */ Inert("ul", null);
   effect(() => {
     todoList.innerHTML = "";
@@ -13,9 +14,10 @@ function App() {
       todoList.appendChild(/* @__PURE__ */ Inert(Todo, { content: todo }));
     });
   }, [todos]);
-  return /* @__PURE__ */ Inert("div", null, /* @__PURE__ */ Inert("button", { onClick: () => count.set(count.get() + 1) }, "Count: ", count), " ", /* @__PURE__ */ Inert("br", null), /* @__PURE__ */ Inert("input", { value: value.get(), onChange: (e) => value.set(e.target.value) }), /* @__PURE__ */ Inert("button", { onClick: () => {
+  const handleClick = () => {
     todos.set([...todos.get(), value.get()]);
-    effect(() => value.set(""));
-  } }, "Add"), todoList);
+    value.set("");
+  };
+  return /* @__PURE__ */ Inert("div", null, /* @__PURE__ */ Inert("button", { onClick: () => count.set(count.get() + 1) }, "Count: ", count, " | Doubled: ", doubledCount), " ", /* @__PURE__ */ Inert("br", null), /* @__PURE__ */ Inert("input", { value, onChange: (e) => value.set(e.target.value) }), /* @__PURE__ */ Inert("button", { onClick: handleClick }, "Add"), todoList);
 }
 mount(App, "#app");
