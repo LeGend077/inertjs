@@ -1,26 +1,46 @@
 let currentEffect = null;
+let shouldTrack = true;
 
-export function effect(fn) {
+export function effect(fn, deps) {
+    let cleanup;
+
     const run = () => {
+        if (cleanup) cleanup();
+
         currentEffect = run;
-        fn();
+        shouldTrack = !Array.isArray(deps);
+
+        cleanup = fn() || null;
+
+        shouldTrack = true;
         currentEffect = null;
     };
+
+    if (Array.isArray(deps)) {
+        deps.forEach(dep => {
+            const subs = dep._subs || (dep._subs = new Set());
+            subs.add(run);
+        });
+    }
+
     run();
 }
 
 export function state(initial) {
     let value = typeof initial === "function" ? initial() : initial;
-    const subscribers = new Set();
+    const subs = new Set();
 
     return {
+	_subs: subs,
         get() {
-            if (currentEffect) subscribers.add(currentEffect);
+            if (currentEffect && shouldTrack) {
+                subs.add(currentEffect);
+            }
             return value;
         },
-        set(v) {
-            value = v;
-            subscribers.forEach(fn => fn());
+        set(next) {
+            value = next;
+            subs.forEach(fn => fn());
         }
     };
 }

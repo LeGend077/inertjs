@@ -10,23 +10,21 @@ function Todo({ content }) {
 
 function App() {
     const value = state("");
-    const todos = state([])
-
+    const todos = state([]);
+    const count = state(0);
     let todoList = <ul></ul>;
 
-    // this runs when a state changes
     effect(() => {
         todoList.innerHTML = "";
         todos.get().forEach(todo => {
 	    todoList.appendChild(<Todo content={todo}/>);
         });
-    });
-
-
+    }, [todos]);
+ 
     return (
-	<div>
+	<div><button onClick={() => count.set(count.get() + 1)}>Count: {count}</button> <br/>
 	<input value={value.get()} onChange={(e) => value.set(e.target.value)}  />
-	<button onClick={() => todos.set([...todos.get(), value.get()])}>Add</button>
+	<button onClick={() => { todos.set([...todos.get(), value.get()]); }}>Add</button>
 	    {todoList}
 	</div>
    );
